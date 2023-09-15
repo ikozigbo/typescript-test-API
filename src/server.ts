@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import sequelize from "./dbconfig/dbconfig";
+import logger from "./dbconfig/utils/logger";
 
 dotenv.config();
 const app = express();
@@ -13,13 +14,13 @@ app.get("/", (req: Request, res: Response) => {
 sequelize
   .authenticate()
   .then(() => {
-    console.log("database connected");
+    logger.info("database connected..");
   })
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Listening to port: ${PORT}`);
+      logger.info(`Listening to port: ${PORT}`);
     });
   })
   .catch((error) => {
-    console.log(error.message);
+    logger.error(error.message);
   });

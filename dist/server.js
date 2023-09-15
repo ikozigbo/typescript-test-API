@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const dbconfig_1 = __importDefault(require("./dbconfig/dbconfig"));
+const logger_1 = __importDefault(require("./dbconfig/utils/logger"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT;
@@ -15,13 +16,13 @@ app.get("/", (req, res) => {
 dbconfig_1.default
     .authenticate()
     .then(() => {
-    console.log("database connected");
+    logger_1.default.info("database connected..");
 })
     .then(() => {
     app.listen(PORT, () => {
-        console.log(`Listening to port: ${PORT}`);
+        logger_1.default.info(`Listening to port: ${PORT}`);
     });
 })
     .catch((error) => {
-    console.log(error.message);
+    logger_1.default.error(error.message);
 });
