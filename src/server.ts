@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+import sequelize from "./dbconfig/dbconfig";
 
 dotenv.config();
 const app = express();
@@ -9,6 +10,16 @@ app.get("/", (req: Request, res: Response) => {
   return res.send("hello world");
 });
 
-app.listen(PORT, () => {
-  console.log("server is running on port" + PORT);
-});
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("database connected");
+  })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Listening to port: ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log(error.message);
+  });
