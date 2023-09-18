@@ -48,7 +48,7 @@ User.init({
     },
     token: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     image: {
         type: sequelize_1.DataTypes.STRING,
