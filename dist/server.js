@@ -8,6 +8,7 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const dbconfig_1 = __importDefault(require("./dbconfig/dbconfig"));
 const logger_1 = __importDefault(require("./dbconfig/utils/logger"));
+const user_router_1 = __importDefault(require("./routers/user.router"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT;
@@ -21,6 +22,7 @@ app.use(express_1.default.urlencoded({
 app.get("/", (req, res) => {
     return res.send("hello world");
 });
+app.use("/api", user_router_1.default);
 dbconfig_1.default
     .authenticate()
     .then(() => {

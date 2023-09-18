@@ -3,6 +3,7 @@ import fileUpload from "express-fileupload";
 import dotenv from "dotenv";
 import sequelize from "./dbconfig/dbconfig";
 import logger from "./dbconfig/utils/logger";
+import userRouter from "./routers/user.router";
 
 dotenv.config();
 const app = express();
@@ -23,6 +24,8 @@ app.use(
 app.get("/", (req: Request, res: Response) => {
   return res.send("hello world");
 });
+
+app.use("/api", userRouter);
 
 sequelize
   .authenticate()
