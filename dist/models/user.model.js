@@ -6,17 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dbconfig_1 = __importDefault(require("../dbconfig/dbconfig"));
 const sequelize_1 = require("sequelize");
 class User extends sequelize_1.Model {
-    id;
-    fullname;
-    email;
-    password;
-    phoneNumber;
-    image;
-    token;
-    verify;
-    status;
-    createdAt;
-    updatedAt;
 }
 User.init({
     id: {
