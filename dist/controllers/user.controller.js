@@ -59,7 +59,7 @@ const login = async (req, res) => {
         console.log(email);
         const user = await user_model_1.default.findOne({ where: { email } });
         if (user) {
-            req.session.user = user.dataValues;
+            req.session.user = user;
         }
         res.status(200).json({ message: user?.dataValues });
     }

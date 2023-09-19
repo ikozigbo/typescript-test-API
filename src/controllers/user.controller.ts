@@ -4,10 +4,6 @@ import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Session, SessionData } from "express-session";
 
-interface CustomSession {
-  user?: User;
-}
-
 export const createUserTable: RequestHandler = async (req, res) => {
   try {
     await User.sync();
@@ -59,6 +55,10 @@ export const newUser: RequestHandler = async (req, res) => {
   }
 };
 
+interface CustomSessionData extends SessionData {
+  user?: User; // Define the 'user' property on the session
+}
+
 export const login: RequestHandler = async (req, res) => {
   try {
     const { email } = req.body;
@@ -67,7 +67,7 @@ export const login: RequestHandler = async (req, res) => {
     const user = await User.findOne({ where: { email } });
 
     if (user) {
-      (req.session as any).user = user.dataValues;
+      (req.session as CustomSessionData).user = user;
     }
     res.status(200).json({ message: user?.dataValues });
   } catch (error: any) {
