@@ -2,6 +2,11 @@ import { RequestHandler } from "express";
 import User from "../models/user.model";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { Session, SessionData } from "express-session";
+
+interface CustomSession {
+  user?: User;
+}
 
 export const createUserTable: RequestHandler = async (req, res) => {
   try {
@@ -46,6 +51,44 @@ export const newUser: RequestHandler = async (req, res) => {
         user,
       });
     }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+      status: "Failed",
+    });
+  }
+};
+
+export const login: RequestHandler = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log(email);
+
+    const user = await User.findOne({ where: { email } });
+
+    if (user) {
+      (req.session as any).user = user.dataValues;
+    }
+    res.status(200).json({ message: user?.dataValues });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+      status: "Failed",
+    });
+  }
+};
+
+export const deleteUser: RequestHandler = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const deleteUser = await User.destroy({
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).json({
+      deleteUser,
+    });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

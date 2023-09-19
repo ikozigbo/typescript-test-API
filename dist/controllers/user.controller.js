@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.newUser = exports.createUserTable = void 0;
+exports.deleteUser = exports.login = exports.newUser = exports.createUserTable = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const createUserTable = async (req, res) => {
@@ -53,3 +53,41 @@ const newUser = async (req, res) => {
     }
 };
 exports.newUser = newUser;
+const login = async (req, res) => {
+    try {
+        const { email } = req.body;
+        console.log(email);
+        const user = await user_model_1.default.findOne({ where: { email } });
+        if (user) {
+            req.session.user = user.dataValues;
+        }
+        res.status(200).json({ message: user?.dataValues });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            status: "Failed",
+        });
+    }
+};
+exports.login = login;
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const deleteUser = await user_model_1.default.destroy({
+            where: {
+                id: id,
+            },
+        });
+        res.status(200).json({
+            deleteUser,
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            status: "Failed",
+        });
+    }
+};
+exports.deleteUser = deleteUser;
