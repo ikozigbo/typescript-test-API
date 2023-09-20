@@ -56,20 +56,27 @@ export const newUser: RequestHandler = async (req, res) => {
 };
 
 interface CustomSessionData extends SessionData {
-  user?: User; // Define the 'user' property on the session
+  user?: User;
 }
 
 export const login: RequestHandler = async (req, res) => {
   try {
-    const { email } = req.body;
-    console.log(email);
+    const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
+    console.log(user);
 
+    let checkPassword = false;
     if (user) {
+      checkPassword = bcryptjs.compareSync(password, user.dataValues.password);
+      // console.log(checkPassword);
       (req.session as CustomSessionData).user = user;
+      res.status(200).json({ message: user?.dataValues });
+    } else {
+      res.status(404).json({
+        message: "no such user with this email",
+      });
     }
-    res.status(200).json({ message: user?.dataValues });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

@@ -55,13 +55,21 @@ const newUser = async (req, res) => {
 exports.newUser = newUser;
 const login = async (req, res) => {
     try {
-        const { email } = req.body;
-        console.log(email);
+        const { email, password } = req.body;
         const user = await user_model_1.default.findOne({ where: { email } });
+        console.log(user);
+        let checkPassword = false;
         if (user) {
+            checkPassword = bcryptjs_1.default.compareSync(password, user.dataValues.password);
+            // console.log(checkPassword);
             req.session.user = user;
+            res.status(200).json({ message: user?.dataValues });
         }
-        res.status(200).json({ message: user?.dataValues });
+        else {
+            res.status(404).json({
+                message: "no such user with this email",
+            });
+        }
     }
     catch (error) {
         return res.status(500).json({
