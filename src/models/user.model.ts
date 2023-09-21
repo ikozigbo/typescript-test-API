@@ -15,18 +15,17 @@ type optionalUserAttributes = Optional<
 >;
 
 class User extends Model<UserAttribute, optionalUserAttributes> {
-  //   public id!: number;
-  //   public fullname!: string;
-  //   public email!: string;
-  //   public password!: string;
-  //   public phoneNumber!: string;
-  //   public image!: string;
-  //   public token!: string;
-  //   public verify!: boolean;
-  //   public status!: boolean;
-  //   public readonly createdAt!: Date;
-  //   public readonly updatedAt!: Date;
-  //
+  //   id!: number;
+  //  fullname!: string;
+  //  email!: string;
+  //  password!: string;
+  //  phoneNumber!: string;
+  //  image!: string;
+  //  token!: string;
+  //  verify!: boolean;
+  //  status!: boolean;
+  //  readonly createdAt!: Date;
+  //  readonly updatedAt!: Date;
 }
 
 User.init(

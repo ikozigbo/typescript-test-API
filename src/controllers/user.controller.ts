@@ -1,8 +1,9 @@
 import { RequestHandler } from "express";
 import User from "../models/user.model";
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { Secret } from "jsonwebtoken";
 import { Session, SessionData } from "express-session";
+import { genToken, decodeToken } from "../utils/jsonwebtoken";
 
 export const createUserTable: RequestHandler = async (req, res) => {
   try {
@@ -69,9 +70,17 @@ export const login: RequestHandler = async (req, res) => {
     let checkPassword = false;
     if (user) {
       checkPassword = bcryptjs.compareSync(password, user.dataValues.password);
+      if (checkPassword) {
+        const token = await genToken(user.dataValues.id, "1d");
+        // const decode = await decodeToken(
+        //   token,
+        //   process.env.JWT_SECRET as Secret
+        // );
+
+        res.status(200).json({ message: user?.dataValues });
+      }
       // console.log(checkPassword);
-      (req.session as CustomSessionData).user = user;
-      res.status(200).json({ message: user?.dataValues });
+      // (req.session as CustomSessionData).user = user;
     } else {
       res.status(404).json({
         message: "no such user with this email",

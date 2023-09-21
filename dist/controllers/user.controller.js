@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.login = exports.newUser = exports.createUserTable = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const jsonwebtoken_1 = require("../utils/jsonwebtoken");
 const createUserTable = async (req, res) => {
     try {
         await user_model_1.default.sync();
@@ -61,9 +62,16 @@ const login = async (req, res) => {
         let checkPassword = false;
         if (user) {
             checkPassword = bcryptjs_1.default.compareSync(password, user.dataValues.password);
+            if (checkPassword) {
+                const token = await (0, jsonwebtoken_1.genToken)(user.dataValues.id, "1d");
+                // const decode = await decodeToken(
+                //   token,
+                //   process.env.JWT_SECRET as Secret
+                // );
+                res.status(200).json({ message: user?.dataValues });
+            }
             // console.log(checkPassword);
-            req.session.user = user;
-            res.status(200).json({ message: user?.dataValues });
+            // (req.session as CustomSessionData).user = user;
         }
         else {
             res.status(404).json({
