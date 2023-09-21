@@ -65,7 +65,7 @@ export const login: RequestHandler = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
-    console.log(user);
+    //console.log(user);
 
     let checkPassword = false;
     if (user) {
@@ -76,8 +76,13 @@ export const login: RequestHandler = async (req, res) => {
         //   token,
         //   process.env.JWT_SECRET as Secret
         // );
+        const { id, email, fullname, verify, image } = user.dataValues;
 
         res.status(200).json({ message: user?.dataValues });
+      } else {
+        res.status(401).json({
+          message: "invalid password",
+        });
       }
       // console.log(checkPassword);
       // (req.session as CustomSessionData).user = user;
