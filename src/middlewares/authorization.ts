@@ -4,20 +4,23 @@ import User from "../models/user.model";
 import { decodeToken } from "../utils/jsonwebtoken";
 import { UserAttribute } from "../interfaces/user.interface";
 
-interface reqUser {
-  user: UserAttribute;
+declare module "express" {
+  interface Request {
+    user?: UserAttribute | null; // Extend the Request object with the user property
+  }
 }
 
-type reqBody = reqUser & Request;
-
 // auth middleware
-const userAuth: RequestHandler = async (req: reqBody, res, next) => {
+const userAuth: RequestHandler = async (req: Request, res, next) => {
   try {
     if (req.headers.authorization) {
       const hasAuthorization = req.headers.authorization;
       const token = hasAuthorization.split(" ")[1];
 
-      const user = await decodeToken(token, process.env.JWT_SECRET as Secret);
+      const user: UserAttribute | null = await decodeToken(
+        token,
+        process.env.JWT_SECRET as Secret
+      );
       req.user = user;
       if (req.user?.isloggedin) {
         next();
@@ -31,19 +34,19 @@ const userAuth: RequestHandler = async (req: reqBody, res, next) => {
         message: "No authorization found, please login",
       });
     }
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
 
-const isAdmin = async (req, res, next) => {
+const isAdmin: RequestHandler = async (req: Request, res, next) => {
   try {
-    if (req.user.isAdmin) {
+    if (req.user?.isAdmin) {
       next();
     } else {
       res.status(401).json({ message: "not an admin" });
     }
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
