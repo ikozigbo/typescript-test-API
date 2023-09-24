@@ -16,18 +16,18 @@ export const userAuth: RequestHandler = async (req: Request, res, next) => {
     if (req.headers.authorization) {
       const hasAuthorization = req.headers.authorization;
       const token = hasAuthorization.split(" ")[1];
-
       const user: UserAttribute | null = await decodeToken(
         token,
         process.env.JWT_SECRET as Secret
       );
+      // console.log(user);
+
       req.user = user;
-      if (user) {
+      if (req.user) {
+        console.log(req.user);
         next();
       } else {
-        res.status(401).json({
-          message: "please login",
-        });
+        res.status(400).json({ message: "please login" });
       }
     } else {
       res.status(400).json({

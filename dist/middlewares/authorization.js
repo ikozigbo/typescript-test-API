@@ -9,14 +9,14 @@ const userAuth = async (req, res, next) => {
             const hasAuthorization = req.headers.authorization;
             const token = hasAuthorization.split(" ")[1];
             const user = await (0, jsonwebtoken_1.decodeToken)(token, process.env.JWT_SECRET);
+            // console.log(user);
             req.user = user;
-            if (user) {
+            if (req.user) {
+                console.log(req.user);
                 next();
             }
             else {
-                res.status(401).json({
-                    message: "please login",
-                });
+                res.status(400).json({ message: "please login" });
             }
         }
         else {

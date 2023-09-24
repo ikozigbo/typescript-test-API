@@ -19,7 +19,7 @@ const decodeToken = async (token, jwtSecret) => {
     return new Promise((resolve, reject) => {
         jsonwebtoken_1.default.verify(token, jwtSecret, async (err, data) => {
             if (err) {
-                reject(err);
+                resolve(null);
             }
             else {
                 try {

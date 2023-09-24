@@ -80,7 +80,7 @@ export const login: RequestHandler = async (req, res) => {
 
         res
           .status(200)
-          .json({ user: token, id, email, fullname, verify, image });
+          .json({ user: { token, id, email, fullname, verify, image } });
       } else {
         res.status(401).json({
           message: "invalid password",
@@ -122,7 +122,7 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
 export const test: RequestHandler = (req, res) => {
   try {
-    res.json(200).json({ message: "gotten to this point" });
+     res.status(200).json({ message: "gotten to this point" });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

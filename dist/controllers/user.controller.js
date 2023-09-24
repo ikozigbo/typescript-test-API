@@ -71,7 +71,7 @@ const login = async (req, res) => {
                 const { id, email, fullname, verify, image } = user.dataValues;
                 res
                     .status(200)
-                    .json({ user: token, id, email, fullname, verify, image });
+                    .json({ user: { token, id, email, fullname, verify, image } });
             }
             else {
                 res.status(401).json({
@@ -117,7 +117,7 @@ const deleteUser = async (req, res) => {
 exports.deleteUser = deleteUser;
 const test = (req, res) => {
     try {
-        res.json(200).json({ message: "gotten to this point" });
+        res.status(200).json({ message: "gotten to this point" });
     }
     catch (error) {
         return res.status(500).json({

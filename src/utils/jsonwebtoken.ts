@@ -26,7 +26,7 @@ export const decodeToken = async (
   return new Promise<UserAttribute | null>((resolve, reject) => {
     jwt.verify(token, jwtSecret, async (err, data) => {
       if (err) {
-        reject(err);
+        resolve(null);
       } else {
         try {
           const payload = data as jwtPayload;
