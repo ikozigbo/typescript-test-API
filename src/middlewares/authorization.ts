@@ -11,7 +11,7 @@ declare module "express" {
 }
 
 // auth middleware
-const userAuth: RequestHandler = async (req: Request, res, next) => {
+export const userAuth: RequestHandler = async (req: Request, res, next) => {
   try {
     if (req.headers.authorization) {
       const hasAuthorization = req.headers.authorization;
@@ -22,7 +22,7 @@ const userAuth: RequestHandler = async (req: Request, res, next) => {
         process.env.JWT_SECRET as Secret
       );
       req.user = user;
-      if (req.user?.isloggedin) {
+      if (user) {
         next();
       } else {
         res.status(401).json({
@@ -39,16 +39,14 @@ const userAuth: RequestHandler = async (req: Request, res, next) => {
   }
 };
 
-const isAdmin: RequestHandler = async (req: Request, res, next) => {
-  try {
-    if (req.user?.isAdmin) {
-      next();
-    } else {
-      res.status(401).json({ message: "not an admin" });
-    }
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-module.exports = { userAuth, isAdmin };
+// const isAdmin: RequestHandler = async (req: Request, res, next) => {
+//   try {
+//     if (req.user?.isAdmin) {
+//       next();
+//     } else {
+//       res.status(401).json({ message: "not an admin" });
+//     }
+//   } catch (error: any) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };

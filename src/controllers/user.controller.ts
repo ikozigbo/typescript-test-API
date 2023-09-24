@@ -71,14 +71,16 @@ export const login: RequestHandler = async (req, res) => {
     if (user) {
       checkPassword = bcryptjs.compareSync(password, user.dataValues.password);
       if (checkPassword) {
-        const token = await genToken(user.dataValues.id, "1d");
+        const token = genToken(user.dataValues.id, "1d");
         // const decode = await decodeToken(
         //   token,
         //   process.env.JWT_SECRET as Secret
         // );
         const { id, email, fullname, verify, image } = user.dataValues;
 
-        res.status(200).json({ message: user?.dataValues });
+        res
+          .status(200)
+          .json({ user: token, id, email, fullname, verify, image });
       } else {
         res.status(401).json({
           message: "invalid password",
@@ -110,6 +112,17 @@ export const deleteUser: RequestHandler = async (req, res) => {
     res.status(200).json({
       deleteUser,
     });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+      status: "Failed",
+    });
+  }
+};
+
+export const test: RequestHandler = (req, res) => {
+  try {
+    res.json(200).json({ message: "gotten to this point" });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

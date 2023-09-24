@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.login = exports.newUser = exports.createUserTable = void 0;
+exports.test = exports.deleteUser = exports.login = exports.newUser = exports.createUserTable = void 0;
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = require("../utils/jsonwebtoken");
@@ -63,13 +63,15 @@ const login = async (req, res) => {
         if (user) {
             checkPassword = bcryptjs_1.default.compareSync(password, user.dataValues.password);
             if (checkPassword) {
-                const token = await (0, jsonwebtoken_1.genToken)(user.dataValues.id, "1d");
+                const token = (0, jsonwebtoken_1.genToken)(user.dataValues.id, "1d");
                 // const decode = await decodeToken(
                 //   token,
                 //   process.env.JWT_SECRET as Secret
                 // );
                 const { id, email, fullname, verify, image } = user.dataValues;
-                res.status(200).json({ message: user?.dataValues });
+                res
+                    .status(200)
+                    .json({ user: token, id, email, fullname, verify, image });
             }
             else {
                 res.status(401).json({
@@ -113,3 +115,15 @@ const deleteUser = async (req, res) => {
     }
 };
 exports.deleteUser = deleteUser;
+const test = (req, res) => {
+    try {
+        res.json(200).json({ message: "gotten to this point" });
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            status: "Failed",
+        });
+    }
+};
+exports.test = test;
