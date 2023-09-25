@@ -9,7 +9,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = require("../utils/jsonwebtoken");
 const createUserTable = async (req, res) => {
     try {
-        await user_model_1.default.sync();
+        await user_model_1.default.sync({ alter: true });
         res.status(200).json({
             message: "success",
         });

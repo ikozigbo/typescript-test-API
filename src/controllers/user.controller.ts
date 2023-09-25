@@ -7,7 +7,7 @@ import { genToken, decodeToken } from "../utils/jsonwebtoken";
 
 export const createUserTable: RequestHandler = async (req, res) => {
   try {
-    await User.sync();
+    await User.sync({ alter: true });
     res.status(200).json({
       message: "success",
     });
@@ -122,7 +122,7 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
 export const test: RequestHandler = (req, res) => {
   try {
-     res.status(200).json({ message: "gotten to this point" });
+    res.status(200).json({ message: "gotten to this point" });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

@@ -11,7 +11,15 @@ import {
 
 type optionalUserAttributes = Optional<
   UserAttribute,
-  "id" | "createdAt" | "verify" | "updatedAt" | "token" | "image" | "isAdmin"
+  | "id"
+  | "createdAt"
+  | "verify"
+  | "updatedAt"
+  | "token"
+  | "image"
+  | "isAdmin"
+  | "authSecret"
+  | "twoFactorAuthEnabled"
 >;
 
 class User extends Model<UserAttribute, optionalUserAttributes> {
@@ -76,6 +84,14 @@ User.init(
     updatedAt: {
       type: DataTypes.DATE,
       allowNull: false,
+    },
+    twoFactorAuthEnabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    authSecret: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {

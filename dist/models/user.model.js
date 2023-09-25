@@ -55,6 +55,14 @@ User.init({
         type: sequelize_1.DataTypes.DATE,
         allowNull: false,
     },
+    twoFactorAuthEnabled: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    authSecret: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: true,
+    },
 }, {
     sequelize: dbconfig_1.default,
     tableName: "user",

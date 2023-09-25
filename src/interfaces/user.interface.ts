@@ -10,4 +10,6 @@ export interface UserAttribute {
   isAdmin: boolean;
   updatedAt: Date;
   createdAt: Date;
+  twoFactorAuthEnabled: boolean;
+  authSecret: string;
 }
