@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userAuth = void 0;
+exports.isAdmin = exports.userAuth = void 0;
 const jsonwebtoken_1 = require("../utils/jsonwebtoken");
 // auth middleware
 const userAuth = async (req, res, next) => {
@@ -30,14 +30,17 @@ const userAuth = async (req, res, next) => {
     }
 };
 exports.userAuth = userAuth;
-// const isAdmin: RequestHandler = async (req: Request, res, next) => {
-//   try {
-//     if (req.user?.isAdmin) {
-//       next();
-//     } else {
-//       res.status(401).json({ message: "not an admin" });
-//     }
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+const isAdmin = async (req, res, next) => {
+    try {
+        if (req.user?.isAdmin) {
+            next();
+        }
+        else {
+            res.status(401).json({ message: "access denied, not an admin" });
+        }
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+exports.isAdmin = isAdmin;

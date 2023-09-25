@@ -39,14 +39,14 @@ export const userAuth: RequestHandler = async (req: Request, res, next) => {
   }
 };
 
-// const isAdmin: RequestHandler = async (req: Request, res, next) => {
-//   try {
-//     if (req.user?.isAdmin) {
-//       next();
-//     } else {
-//       res.status(401).json({ message: "not an admin" });
-//     }
-//   } catch (error: any) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+export const isAdmin: RequestHandler = async (req: Request, res, next) => {
+  try {
+    if (req.user?.isAdmin) {
+      next();
+    } else {
+      res.status(401).json({ message: "access denied, not an admin" });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

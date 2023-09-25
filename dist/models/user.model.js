@@ -35,6 +35,10 @@ User.init({
         type: sequelize_1.DataTypes.BOOLEAN,
         defaultValue: false,
     },
+    isAdmin: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
     token: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,

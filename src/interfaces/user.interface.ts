@@ -7,6 +7,7 @@ export interface UserAttribute {
   phoneNumber: string;
   token: string;
   verify: boolean;
+  isAdmin: boolean;
   updatedAt: Date;
   createdAt: Date;
 }

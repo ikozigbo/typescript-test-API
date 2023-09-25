@@ -11,7 +11,7 @@ import {
 
 type optionalUserAttributes = Optional<
   UserAttribute,
-  "id" | "createdAt" | "verify" | "updatedAt" | "token" | "image"
+  "id" | "createdAt" | "verify" | "updatedAt" | "token" | "image" | "isAdmin"
 >;
 
 class User extends Model<UserAttribute, optionalUserAttributes> {
@@ -54,6 +54,10 @@ User.init(
       allowNull: false,
     },
     verify: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    isAdmin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
