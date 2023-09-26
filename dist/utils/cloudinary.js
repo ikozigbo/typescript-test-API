@@ -8,8 +8,8 @@ dotenv_1.default.config();
 const cloudinary_1 = require("cloudinary");
 //import multer from "multer"
 cloudinary_1.v2.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.CLOUD_KEY,
-    api_secret: process.env.CLOUD_SEC,
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_KEY,
+    api_secret: process.env.CLOUDINARY_SECRET,
 });
 exports.default = cloudinary_1.v2;

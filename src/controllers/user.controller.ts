@@ -1,9 +1,11 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request } from "express";
 import User from "../models/user.model";
 import bcryptjs from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
 import { Session, SessionData } from "express-session";
 import { genToken, decodeToken } from "../utils/jsonwebtoken";
+import { UploadedFile } from "express-fileupload";
+import Cloudinary from "../utils/cloudinary";
 
 export const createUserTable: RequestHandler = async (req, res) => {
   try {
@@ -30,13 +32,13 @@ export const newUser: RequestHandler = async (req, res) => {
     } else {
       const salt = bcryptjs.genSaltSync(10);
       const hash = bcryptjs.hashSync(password, salt);
-      type UserAttribute = {
+      type UserAttribut = {
         fullname: string;
         password: string;
         email: string;
         phoneNumber: string;
       };
-      const data: UserAttribute = {
+      const data: UserAttribut = {
         fullname,
         email,
         password: hash,
@@ -114,6 +116,40 @@ export const deleteUser: RequestHandler = async (req, res) => {
     });
   } catch (error: any) {
     return res.status(500).json({
+      message: error.message,
+      status: "Failed",
+    });
+  }
+};
+
+export const setProfileImage: RequestHandler = async (req: Request, res) => {
+  try {
+    const reqUser = req.user;
+    const image = req.files?.image as UploadedFile;
+    console.log(image);
+    if (image.mimetype?.includes("image")) {
+       if (reqUser?.image) {
+           const publicId = reqUser?.image
+             .split("/")
+             .pop()
+             ?.split(".")[0];
+             await Cloudinary.uploader.destroy(publicId as string);
+       }
+      console.log("1");
+
+      const imageObject = await Cloudinary.uploader.upload(image.tempFilePath);
+      console.log("2");
+      const user = await User.findOne({ where: { id: reqUser?.id } });
+      //console.log(user);
+      user?.set({
+        image: imageObject.secure_url,
+      });
+      await user?.save();
+      const updatedUser = await User.findOne({ where: { id: reqUser?.id } });
+      res.status(200).json({ user: updatedUser?.dataValues });
+    }
+  } catch (error: any) {
+    res.status(500).json({
       message: error.message,
       status: "Failed",
     });
