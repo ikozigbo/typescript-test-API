@@ -122,7 +122,7 @@ export const deleteUser: RequestHandler = async (req, res) => {
 
 export const test: RequestHandler = (req, res) => {
   try {
-    res.status(200).json({ message: "gotten to this point" });
+    res.status(200).json({ message: "gotten to this point...." });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
