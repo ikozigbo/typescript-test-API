@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+//import express, { Request, Response } from "express";
 const dotenv_1 = __importDefault(require("dotenv"));
 const dbconfig_1 = __importDefault(require("./dbconfig/dbconfig"));
 const express_session_1 = __importDefault(require("express-session"));
@@ -25,6 +26,11 @@ dbconfig_1.default
 })
     .catch((error) => {
     logger_1.default.error(error.message);
+});
+process.on("SIGINT", async () => {
+    await dbconfig_1.default.close();
+    logger_1.default.info("Server closed");
+    process.exit(0);
 });
 // Create a MySQL connection pool
 // const pool: Pool = mysql.createPool({
@@ -74,8 +80,3 @@ dbconfig_1.default
 //     },
 //   })
 // );
-process.on("SIGINT", async () => {
-    await dbconfig_1.default.close();
-    logger_1.default.info("Server closed");
-    process.exit(0);
-});

@@ -145,9 +145,18 @@ const setProfileImage = async (req, res) => {
     }
 };
 exports.setProfileImage = setProfileImage;
-const test = (req, res) => {
+const test = async (req, res) => {
     try {
-        res.status(200).json({ message: "gotten to this point...." });
+        const user = await user_model_1.default.findOne({ where: { id: req.params.id } });
+        if (!user) {
+            console.log(user);
+            res.status(401).json({ message: "user not found" });
+        }
+        else {
+            res.status(200).json({
+                user,
+            });
+        }
     }
     catch (error) {
         return res.status(500).json({

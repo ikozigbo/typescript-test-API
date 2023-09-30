@@ -150,9 +150,18 @@ export const setProfileImage: RequestHandler = async (req: Request, res) => {
   }
 };
 
-export const test: RequestHandler = (req, res) => {
+export const test: RequestHandler = async (req, res) => {
   try {
-    res.status(200).json({ message: "gotten to this point...." });
+    const user = await User.findOne({ where: { id: req.params.id } });
+    if (!user) {
+      console.log(user);
+
+      res.status(401).json({ message: "user not found" });
+    } else {
+      res.status(200).json({
+        user,
+      });
+    }
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

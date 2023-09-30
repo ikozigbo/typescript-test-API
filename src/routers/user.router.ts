@@ -15,7 +15,7 @@ router.get("/create-user", createUserTable);
 router.post("/new-user", newUser);
 router.post("/login", login);
 router.post("/set-profile-image", userAuth, setProfileImage);
-router.get("/test-endpoint", userAuth, isAdmin, test);
+router.get("/test-endpoint/:id", userAuth, isAdmin, test);
 router.delete("/delete-user", deleteUser);
 
 export default router;

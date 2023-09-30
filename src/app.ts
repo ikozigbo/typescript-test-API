@@ -1,31 +1,42 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv_1 = __importDefault(require("dotenv"));
-const dbconfig_1 = __importDefault(require("./dbconfig/dbconfig"));
-const express_session_1 = __importDefault(require("express-session"));
-const connect_mongodb_session_1 = __importDefault(require("connect-mongodb-session"));
-const logger_1 = __importDefault(require("./dbconfig/utils/logger"));
-const server_utility_1 = __importDefault(require("./utils/server.utility"));
-const MongoDBStore = (0, connect_mongodb_session_1.default)(express_session_1.default);
-dotenv_1.default.config();
+//import express, { Request, Response } from "express";
+import dotenv from "dotenv";
+import sequelize from "./dbconfig/dbconfig";
+import session from "express-session";
+import MySQLStore from "express-mysql-session"; // Use MySQLStore here, not MySQLsession
+import connectMongoDBSession from "connect-mongodb-session";
+import mysql, { Pool, PoolOptions } from "mysql2/promise";
+import logger from "./dbconfig/utils/logger";
+
+import createServer from "./utils/server.utility";
+
+const MongoDBStore = connectMongoDBSession(session);
+
+dotenv.config();
+
 const PORT = process.env.PORT;
-const app = (0, server_utility_1.default)();
-dbconfig_1.default
-    .authenticate()
-    .then(() => {
-    logger_1.default.info("Database connected....");
-})
-    .then(() => {
+
+const app = createServer();
+
+sequelize
+  .authenticate()
+  .then(() => {
+    logger.info("Database connected....");
+  })
+  .then(() => {
     app.listen(PORT, () => {
-        logger_1.default.info(`Listening to port: ${PORT}`);
+      logger.info(`Listening to port: ${PORT}`);
     });
-})
-    .catch((error) => {
-    logger_1.default.error(error.message);
+  })
+  .catch((error) => {
+    logger.error(error.message);
+  });
+
+process.on("SIGINT", async () => {
+  await sequelize.close();
+  logger.info("Server closed");
+  process.exit(0);
 });
+
 // Create a MySQL connection pool
 // const pool: Pool = mysql.createPool({
 //   host: process.env.DB_HOST,
@@ -33,6 +44,7 @@ dbconfig_1.default
 //   password: process.env.DB_PASSWORD,
 //   database: process.env.DB_NAME,
 // });
+
 // Configure express-session and MySQLStore for session storage
 // const sessionStore = new MySQLStore( // Use 'new MySQLStore' to create an instance
 //   {
@@ -48,10 +60,12 @@ dbconfig_1.default
 //   },
 //   pool
 // );
+
 // const store = new MongoDBStore({
 //   uri: process.env.DB as string, // Assuming DB is a string
 //   collection: "my sessions",
 // });
+
 // app.use(
 //   session({
 //     secret: "thisWillSignTheCookie",
@@ -63,6 +77,7 @@ dbconfig_1.default
 //     },
 //   })
 // );
+
 // app.use(
 //   session({
 //     secret: process.env.SESSION_SECRET || "your-secret-key",
@@ -74,8 +89,3 @@ dbconfig_1.default
 //     },
 //   })
 // );
-process.on("SIGINT", async () => {
-    await dbconfig_1.default.close();
-    logger_1.default.info("Server closed");
-    process.exit(0);
-});

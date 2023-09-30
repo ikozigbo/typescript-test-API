@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start:dist": "tsc -w",
-    "start:server": "nodemon dist/server.js",
-    "start": "concurrently npm:start:*"
+    "start:server": "nodemon dist/app.js",
+    "start": "concurrently npm:start:*",
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [
     "node",
