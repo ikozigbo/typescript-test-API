@@ -123,15 +123,10 @@ const setProfileImage = async (req, res) => {
         console.log(image);
         if (image.mimetype?.includes("image")) {
             if (reqUser?.image) {
-                const publicId = reqUser?.image
-                    .split("/")
-                    .pop()
-                    ?.split(".")[0];
+                const publicId = reqUser?.image.split("/").pop()?.split(".")[0];
                 await cloudinary_1.default.uploader.destroy(publicId);
             }
-            console.log("1");
             const imageObject = await cloudinary_1.default.uploader.upload(image.tempFilePath);
-            console.log("2");
             const user = await user_model_1.default.findOne({ where: { id: reqUser?.id } });
             //console.log(user);
             user?.set({

@@ -128,17 +128,11 @@ export const setProfileImage: RequestHandler = async (req: Request, res) => {
     const image = req.files?.image as UploadedFile;
     console.log(image);
     if (image.mimetype?.includes("image")) {
-       if (reqUser?.image) {
-           const publicId = reqUser?.image
-             .split("/")
-             .pop()
-             ?.split(".")[0];
-             await Cloudinary.uploader.destroy(publicId as string);
-       }
-      console.log("1");
-
+      if (reqUser?.image) {
+        const publicId = reqUser?.image.split("/").pop()?.split(".")[0];
+        await Cloudinary.uploader.destroy(publicId as string);
+      }
       const imageObject = await Cloudinary.uploader.upload(image.tempFilePath);
-      console.log("2");
       const user = await User.findOne({ where: { id: reqUser?.id } });
       //console.log(user);
       user?.set({
