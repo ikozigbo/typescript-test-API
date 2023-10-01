@@ -7,7 +7,7 @@
     "start:dist": "tsc -w",
     "start:server": "nodemon dist/app.js",
     "start": "concurrently npm:start:*",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles --watchAll"
   },
   "keywords": [
     "node",
