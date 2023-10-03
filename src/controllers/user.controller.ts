@@ -6,6 +6,7 @@ import { Session, SessionData } from "express-session";
 import { genToken, decodeToken } from "../utils/jsonwebtoken";
 import { UploadedFile } from "express-fileupload";
 import Cloudinary from "../utils/cloudinary";
+import { z } from "zod";
 
 export const createUserTable: RequestHandler = async (req, res) => {
   try {
@@ -24,6 +25,10 @@ export const createUserTable: RequestHandler = async (req, res) => {
 export const newUser: RequestHandler = async (req, res) => {
   try {
     const { fullname, password, email, phoneNumber } = req.body;
+    // const nameSchema = z
+    //   .string()
+    //   .min(5, { message: "Must be 5 or more characters long" });
+    // nameSchema.parse(fullname);
     const isEmail = await User.findOne({ where: { email } });
     if (isEmail) {
       res.status(409).json({

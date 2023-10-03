@@ -26,6 +26,10 @@ exports.createUserTable = createUserTable;
 const newUser = async (req, res) => {
     try {
         const { fullname, password, email, phoneNumber } = req.body;
+        // const nameSchema = z
+        //   .string()
+        //   .min(5, { message: "Must be 5 or more characters long" });
+        // nameSchema.parse(fullname);
         const isEmail = await user_model_1.default.findOne({ where: { email } });
         if (isEmail) {
             res.status(409).json({
