@@ -20,7 +20,7 @@ const app = createServer();
 sequelize
   .authenticate()
   .then(() => {
-    logger.info("Database connected.......");
+    logger.info("Database connected.........");
   })
   .then(() => {
     app.listen(PORT, () => {
