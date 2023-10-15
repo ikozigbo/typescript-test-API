@@ -17,7 +17,7 @@ const app = (0, server_utility_1.default)();
 dbconfig_1.default
     .authenticate()
     .then(() => {
-    logger_1.default.info("Database connected....");
+    logger_1.default.info("Database connectedd.........");
 })
     .then(() => {
     app.listen(PORT, () => {

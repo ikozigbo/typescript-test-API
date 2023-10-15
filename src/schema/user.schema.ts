@@ -30,7 +30,7 @@ export const userSchema: ZodSchema<userAttribute> = object({
     .regex(/^\d+$/, "Phone number must only contain numeric characters")
     .min(10, "Phone number must be a valid number please"),
   confirmPassword: string({
-    required_error: "required.",
+    required_error: "confirm password required.",
   }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Password does not match",
