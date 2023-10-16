@@ -1,4 +1,4 @@
-import sequelize from "../dbconfig/dbconfig";
+import sequelize from "../config/dbconnect";
 import express from "express";
 import fileUpload from "express-fileupload";
 import routes from "../routes";

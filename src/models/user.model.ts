@@ -1,4 +1,4 @@
-import sequelize from "../dbconfig/dbconfig";
+import sequelize from "../config/dbconnect";
 import { UserAttribute } from "../interfaces/user.interface";
 import {
   Model,

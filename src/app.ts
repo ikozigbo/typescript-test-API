@@ -1,11 +1,11 @@
 //import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import sequelize from "./dbconfig/dbconfig";
+import sequelize from "./config/dbconnect";
 import session from "express-session";
 import MySQLStore from "express-mysql-session"; // Use MySQLStore here, not MySQLsession
 import connectMongoDBSession from "connect-mongodb-session";
 import mysql, { Pool, PoolOptions } from "mysql2/promise";
-import logger from "./dbconfig/utils/logger";
+import logger from "./utils/logger";
 
 import createServer from "./utils/server.utility";
 
@@ -20,7 +20,7 @@ const app = createServer();
 sequelize
   .authenticate()
   .then(() => {
-    logger.info("Database connected.......");
+    logger.info("Database connected........");
   })
   .then(() => {
     app.listen(PORT, () => {

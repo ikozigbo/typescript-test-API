@@ -5,19 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 //import express, { Request, Response } from "express";
 const dotenv_1 = __importDefault(require("dotenv"));
-const dbconfig_1 = __importDefault(require("./dbconfig/dbconfig"));
+const dbconnect_1 = __importDefault(require("./config/dbconnect"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_mongodb_session_1 = __importDefault(require("connect-mongodb-session"));
-const logger_1 = __importDefault(require("./dbconfig/utils/logger"));
+const logger_1 = __importDefault(require("./utils/logger"));
 const server_utility_1 = __importDefault(require("./utils/server.utility"));
 const MongoDBStore = (0, connect_mongodb_session_1.default)(express_session_1.default);
 dotenv_1.default.config();
 const PORT = process.env.PORT;
 const app = (0, server_utility_1.default)();
-dbconfig_1.default
+dbconnect_1.default
     .authenticate()
     .then(() => {
-    logger_1.default.info("Database connected.......");
+    logger_1.default.info("Database connected........");
 })
     .then(() => {
     app.listen(PORT, () => {
@@ -28,7 +28,7 @@ dbconfig_1.default
     logger_1.default.error(error.message);
 });
 process.on("SIGINT", async () => {
-    await dbconfig_1.default.close();
+    await dbconnect_1.default.close();
     logger_1.default.info("Server closed");
     process.exit(0);
 });
