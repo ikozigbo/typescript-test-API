@@ -1,15 +1,15 @@
-import dotenv from "dotenv";
+const dotenv = require('dotenv');
 
 dotenv.config();
 
 module.exports ={
   "development": {
     "username": process.env.MYSQLUSER,
-    "password": process.env.MYSQLPASSWORD,
-    "database": process.env.MYSQLDATABASE,
+    "password": process.env.MYSQLPASS,
+    "database": process.env.MYSQLDB,
     "host": process.env.MYSQLHOST,
     "dialect": "mysql",
-    "port": 6903,
+    //"port": 6903,
   },
   "test": {
     "username": process.env.MYSQLUSER,
