@@ -12,7 +12,7 @@ const createUserTable = async (req, res) => {
     try {
         await user_model_1.default.sync({ alter: true });
         res.status(200).json({
-            message: "success",
+            message: "successs",
         });
     }
     catch (error) {
