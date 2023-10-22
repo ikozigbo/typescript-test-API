@@ -9,7 +9,7 @@ type userAttribute = {
 
 export const userSchema: ZodSchema<userAttribute> = object({
   fullname: string({
-    required_error: "hotelName is required.",
+    required_error: "fullName is required.",
   })
     .nonempty()
     .min(2),
