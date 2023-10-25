@@ -12,7 +12,7 @@ export const createUserTable: RequestHandler = async (req, res) => {
   try {
     await User.sync({ alter: true });
     res.status(200).json({
-      message: "successs",
+      message: "success",
     });
   } catch (error: any) {
     return res.status(500).json({
