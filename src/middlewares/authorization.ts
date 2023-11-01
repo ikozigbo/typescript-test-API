@@ -31,7 +31,7 @@ export const userAuth: RequestHandler = async (req: Request, res, next) => {
       }
     } else {
       res.status(400).json({
-        message: "No authorization found, please login",
+        message: "No authorization found, please login..",
       });
     }
   } catch (error: any) {
