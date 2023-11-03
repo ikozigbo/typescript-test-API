@@ -150,7 +150,7 @@ export const setProfileImage: RequestHandler = async (req: Request, res) => {
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
-      status: "Failed",
+      status: "failed",
     });
   }
 };
